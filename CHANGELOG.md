@@ -2,7 +2,25 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [0.4.23] - UNRELEASED
+## [0.4.24] - 2018-07-09
+### Added
+- `mlb-balancer` resource to create, update and remove balancer
+- `mlb-deployment` resource to create, update and remove deployment
+- `mlb-listener` resource to create, update and remove listener
+- `mlb-routingRule` resource to create, update and remove routingRule
+- `mlb-targetSet` resource to create, update and remove targetSet
+
+- add tests for 
+   - `mlb-balancer`
+   - `mlb-deployment` 
+   - `mlb-listener`
+   - `mlb-routingRule` 
+   - `mlb-targetSet`
+
+
+## [0.4.23] - 2018-07-09
+### Changed
+- take `lambda-formation` dependence from spotinst GitHub
 
 ## [0.4.22] - 2018-06-29
 ### Added
