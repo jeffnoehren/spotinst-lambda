@@ -2,25 +2,29 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [0.4.24] - 2018-07-09
+## [0.4.26] - 2018-10-18
 ### Added
-- `mlb-balancer` resource to create, update and remove balancer
-- `mlb-deployment` resource to create, update and remove deployment
-- `mlb-listener` resource to create, update and remove listener
-- `mlb-routingRule` resource to create, update and remove routingRule
-- `mlb-targetSet` resource to create, update and remove targetSet
+ - autoTag option to CF template
+ 
+### Fixed
+-  Race condition error with multi elastigroup create failure
+ - Error in validate response util function
 
-- add tests for 
-   - `mlb-balancer`
-   - `mlb-deployment` 
-   - `mlb-listener`
-   - `mlb-routingRule` 
-   - `mlb-targetSet`
-
-
-## [0.4.23] - 2018-07-09
+## [0.4.25] - 2018-09-28
 ### Changed
-- take `lambda-formation` dependence from spotinst GitHub
+ - beanstalk and asg delete to point to elastigroup delete
+
+## [0.4.24] - 2018-09-21
+### Changed
+ - moved the `createGroup` function to `spotUtil`
+
+### Added
+ - `importAsg` accepts new field `groupConfig` for create and update
+ - `importBeanstalk` accepts new field `groupConfig` for create and update
+
+## [0.4.23] - 2018-08-30
+### Added
+ - `importAsg` resource to create, delete and update
 
 ## [0.4.22] - 2018-06-29
 ### Added

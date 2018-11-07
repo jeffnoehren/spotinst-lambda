@@ -1,10 +1,10 @@
 var assert       = require('assert'),
-    deleteGroup  = require('../../lib/resources/elasticgroup/delete'),
-    elasticgroup = require('../../lib/resources/elasticgroup'),
+    deleteAsg  = require('../../lib/resources/importAsg/delete'),
+    importAsg = require('../../lib/resources/importAsg'),
     lambda       = require('../../'),
     nock         = require('nock');
 
-describe("elasticgroup", function() {
+describe("importAsg", function() {
   describe("delete resource", function() {
     before(function() {
       for(var i = 0; i < 3; i++) {
@@ -44,13 +44,13 @@ describe("elasticgroup", function() {
         }
       };
 
-      deleteGroup.handler({
+      deleteAsg.handler({
         accessToken: ACCESSTOKEN,
         id:          'sig-11111111'
       }, context);
     });
 
-    it("elasticgroup handler should delete an existing group", function(done) {
+    it("importAsg handler should delete an existing group", function(done) {
       var context = {
         done: function(err, obj) {
           assert.ifError(err);
@@ -59,7 +59,7 @@ describe("elasticgroup", function() {
         }
       };
 
-      elasticgroup.handler({
+      importAsg.handler({
         requestType: 'delete',
         accessToken: ACCESSTOKEN,
         id:          'sig-11111111'
@@ -76,7 +76,7 @@ describe("elasticgroup", function() {
       };
 
       lambda.handler({
-        resourceType: 'elasticgroup',
+        resourceType: 'importAsg',
         requestType:  'delete',
         accessToken:  ACCESSTOKEN,
         id:           'sig-11111111'
@@ -107,7 +107,7 @@ describe("elasticgroup", function() {
       };
 
       lambda.handler({
-          ResourceType:       'Custom::elasticgroup',
+          ResourceType:       'Custom::importAsg',
           ResourceProperties: {
             accessToken: ACCESSTOKEN,
           },
@@ -120,63 +120,6 @@ describe("elasticgroup", function() {
         },
         context);
     });
-
-    it("delete group with autoTag set to true", function(done){
-      nock('https://api.spotinst.io', {"encodedQueryParams": true})
-        .get('/aws/ec2/group')
-        .reply(200, {
-          "request":  {
-            "id":        "9bad8ebc-a42c-425f-83ab-fbec3b1cbd8a",
-            "url":       "/aws/ec2/group",
-            "method":    "GET",
-            "timestamp": "2016-01-28T17:34:37.072Z"
-          },
-          "response": {
-            "status": {
-              "code":    200,
-              "message": "OK"
-            },
-            "items":[
-              {
-                "id":"sig-11111111",
-                "compute":{
-                  "launchSpecification":{
-                    "tags":[
-                      {"tagKey":"spotinst:aws:cloudformation:logical-id", "tagValue": "Elastigroup"},
-                      {"tagKey":"spotinst:aws:cloudformation:stack-id"  , "tagValue": "arn::12345/test/67890"},
-                      {"tagKey":"spotinst:aws:cloudformation:stack-name", "tagValue": "test"}
-                    ]
-                  }
-                }
-              }
-            ]
-          }
-        }, {
-          'content-type':    'application/json; charset=utf-8',
-          date:              'Thu, 28 Jan 2016 17:34:37 GMT',
-          vary:              'Accept-Encoding',
-          'x-request-id':    '9aad8ebb-a42d-424f-83aa-fbfc3b14bd8a',
-          'x-response-time': '1115ms',
-          'content-length':  '266',
-          connection:        'Close'
-        });
-
-      nock('https://api.spotinst.io', {"encodedQueryParams": true})
-        .delete('/aws/ec2/group/sig-11111111')
-        .reply(200, {});
-
-        var context = {
-          done: done()
-        };
-
-      deleteGroup.handler({
-        accessToken: ACCESSTOKEN,
-        id:          'sig-11111111',
-        autoTag:true,
-        LogicalResourceId:"Elastigroup",
-        StackId:"arn::12345/test/67890"
-      }, context);      
-    })
   });
 
   describe("delete resource fail", function() {
@@ -241,10 +184,11 @@ describe("elasticgroup", function() {
           }
         };
 
-        deleteGroup.handler({
+        deleteAsg.handler({
           accessToken: ACCESSTOKEN,
           id:          'sig-11111111'
         }, context);
+
       });
     });
 
@@ -278,14 +222,15 @@ describe("elasticgroup", function() {
         var context = {
           done: function(err, obj) {
             assert.equal(err, null);
-            done(err, obj);
+            done();
           }
         };
 
-        deleteGroup.handler({
+        deleteAsg.handler({
           accessToken: ACCESSTOKEN,
           id:          'sig-11111111'
         }, context);
+
       });
     });
   });
